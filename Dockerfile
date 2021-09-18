@@ -35,10 +35,15 @@ RUN git clone https://github.com/JPaulMora/Pyrit.git Pyrit \
 	&& python setup.py install \
 	&& cd modules/cpyrit_cuda/ \
 	&& python setup.py build \
-	&& python setup.py install
+	&& python setup.py install \
+	&& cd ../../../ && rm -rf Pyrit
 
-# Add pyrit config
+# Add pyrit config for root user (not recommanded)
 COPY config /root/.pyrit/config
+# Add pyrit config for any user
+COPY config /.pyrit/config
 
-# Default command
-CMD ["pyrit", "benchmark"]
+
+# Set pyrit as defautl entrypoint and display help menu by default
+ENTRYPOINT ["/usr/local/bin/pyrit"]
+CMD ["-h"]
