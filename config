@@ -1,4 +1,3 @@
-torage = file://
 limit_ncpus = -1
 rpc_announce = true
 rpc_announce_broadcast = false
