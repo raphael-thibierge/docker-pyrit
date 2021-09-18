@@ -13,3 +13,4 @@ Uses `pyrit` as default entrypoint with GPU cores only.
 ```bash
 docker run --rm --gpus all rthibierge/pyrit-cuda list_cores
 ```
+
