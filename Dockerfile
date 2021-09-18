@@ -1,4 +1,6 @@
-FROM nvidia/cuda:11.4.2-cudnn8-devel-ubuntu20.04 as base
+ARG CUDA_VERSION=11.4.1
+
+FROM nvidia/cuda:${CUDA_VERSION}-devel-ubuntu18.04 as base
 MAINTAINER Raphael THIBIERGE
 
 WORKDIR /app
@@ -6,33 +8,23 @@ WORKDIR /app
 # Install all packages required to build and install pyrit
 RUN apt update && apt upgrade -y && apt install -y \
 	git \
-	curl \
-	vim \
 	python \
 	python-dev \
+	python-pip \
 	libssl-dev \
-	libz-dev \
+	zlib1g-dev \
 	libpcap-dev \
-	libssl-dev \
-	libz-dev \
-	libpcap-dev \
+	linux-headers-generic \
 	clang \
-	python-clang \
-	linux-headers-$(uname -r) \
-	&& rm -rf /var/lib/apt/lists/*
-
-# Install sqlalchemy to use slqite with pyrit
-RUN curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py \
-	&& python get-pip.py \
-	&& rm get-pip.py \
-	&& pip install sqlalchemy
+	&& rm -rf /var/lib/apt/lists/* \
+	&& pip install --no-cache sqlalchemy
 
 
 # Clone Pyrit repository, build and install
 RUN git clone https://github.com/JPaulMora/Pyrit.git Pyrit \
 	&& cd Pyrit \
 	&& sed -i "s/COMPILE_AESNI/COMPILE_AESNIX/" cpyrit/_cpyrit_cpu.c \
-	&& python setup.py install \
+	&& python setup.py install \ 
 	&& cd modules/cpyrit_cuda/ \
 	&& python setup.py build \
 	&& python setup.py install \
