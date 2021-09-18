@@ -1,0 +1,9 @@
+torage = file://
+limit_ncpus = -1
+rpc_announce = true
+rpc_announce_broadcast = false
+rpc_knownclients =
+rpc_server = false
+use_CUDA = true
+use_OpenCL = false
+workunit_size = 75000 
